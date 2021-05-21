@@ -3,6 +3,3 @@ language: java
 jdk:
  - openjdk11
 
- script:
- - java --version
- - mvn clean verify
