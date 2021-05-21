@@ -7,7 +7,7 @@ addons:
   sonarcloud:
     organization: "michelesalvatori"
     token:
-      secure: 3b60b099b9eb81275b7f3872dd5a7ed8df1ecdc1 # encrypted value of your token
+      secure: "3b60b099b9eb81275b7f3872dd5a7ed8df1ecdc1" 
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
