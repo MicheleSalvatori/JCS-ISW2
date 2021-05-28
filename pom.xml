@@ -89,7 +89,7 @@
 		<profile>
 			<id>coverageProfile</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<dependencies>
 				<dependency>
