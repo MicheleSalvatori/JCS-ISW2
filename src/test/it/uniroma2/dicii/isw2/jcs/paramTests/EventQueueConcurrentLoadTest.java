@@ -37,7 +37,7 @@ public class EventQueueConcurrentLoadTest {
 
 	@Parameters
 	public static Collection<Object[]> getTestParameters() {
-		return Arrays.asList(new Object[][] { { 200, 200 }, { 1200, 1400 }, {5200, 6600 }});			// con (1200, 1400) e (5200,6600) fallisce
+		return Arrays.asList(new Object[][] { { 200, 200 }, { 1200, 1400 }, {5200, 6600 }});			
 	}
 
 	@BeforeClass
