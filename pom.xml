@@ -122,28 +122,32 @@
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
 						<version>0.8.7</version>
-						<executions>
-							<!-- NOTE THAT AUTOMATIC REPORTING IS USELESS, AS THE SOURCE FILES 
-								OF jcs ARE NEEDED: -->
-							<!-- GENERATE THE REPORTS OFFLINE AS DESCRIBED IN jacocolibSnippets.txt -->
-							<execution>
-								<id>TheExecutionId</id>
-								<goals>
-									<goal>prepare-agent</goal>
-								</goals>
+						<configuration>
+							<destFile>${sonar.jacoco.reportPath}</destFile>
+							<append>true</append>
+							</configuration>
+							<executions>
+								<!-- NOTE THAT AUTOMATIC REPORTING IS USELESS, AS THE SOURCE FILES 
+									OF jcs ARE NEEDED: -->
+								<!-- GENERATE THE REPORTS OFFLINE AS DESCRIBED IN jacocolibSnippets.txt -->
+								<execution>
+									<id>TheExecutionId</id>
+									<goals>
+										<goal>prepare-agent</goal>
+									</goals>
 								</execution>
-						</executions>
+							</executions>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 		<profile>
-       <id>sonar</id>
-        	<activation>
-            	<activeByDefault>true</activeByDefault>
-            </activation>
-          	<properties>
-               	<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+			<id>sonar</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 				<sonar.organization>michelesalvatori</sonar.organization>
 				<sonar.projectKey>MicheleSalvatori_JCS-ISW2</sonar.projectKey>
 				<sonar.projectName>JCS-ISW2</sonar.projectName>
@@ -153,9 +157,11 @@
 				<sonar.java.file.suffixes>.java</sonar.java.file.suffixes>
 				<sonar.tests>${project.build.testSourceDirectory}</sonar.tests>
 				<sonar.verbose>true</sonar.verbose>
-				<!-- Path to JaCoCo XML coverage reports-->
-    			<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+				<!-- Path to JaCoCo XML coverage reports 
+				<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+				-->
+				<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 			</properties>
-    </profile>
+		</profile>
 	</profiles>
 </project>
