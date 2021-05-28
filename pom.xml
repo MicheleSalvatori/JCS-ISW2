@@ -89,7 +89,7 @@
 		<profile>
 			<id>coverageProfile</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<dependencies>
 				<dependency>
@@ -154,7 +154,7 @@
 				<sonar.tests>${project.build.testSourceDirectory}</sonar.tests>
 				<sonar.verbose>true</sonar.verbose>
 				<!-- Path to JaCoCo XML coverage reports-->
-    			<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    			<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 			</properties>
     </profile>
 	</profiles>
