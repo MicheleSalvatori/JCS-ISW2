@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import org.apache.jcs.engine.CacheElement;
 import org.apache.jcs.engine.CacheEventQueue;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class EventQueueConcurrentLoadTest {
 
 	@Parameters
 	public static Collection<Object[]> getTestParameters() {
-		return Arrays.asList(new Object[][] { { 200, 200 }, { 1200, 1400 }, {5200, 6600 }});			
+		return Arrays.asList(new Object[][] { { 200, 200 }, { 1200, 1400 }, { 5200, 6600 } });
 	}
 
 	@BeforeClass
@@ -68,44 +69,65 @@ public class EventQueueConcurrentLoadTest {
 				+ expectedPutCount + "]", listen.putCount >= (expectedPutCount - 1));
 	}
 
-	/*
-	 * @Test
-	 * public void runRemoveTest(int end) throws Exception { 
-	 * 	for (int i = 0; i <= end; i++) { queue.addRemoveEvent(i + ":key");
-	 * }
-	 * 
-	 * }
-	 * 
-	 * @Test
-	 * public void runStopProcessingTest() throws Exception { 
-	 * 	queue.stopProcessing();
-	 *  }
-	 * 
-	 * @Test 
-	 * public void runPutDelayTest(int end, int expectedPutCount) throws
-	 * Exception { while (!queue.isEmpty()) { synchronized (this) {
-	 * System.out.println("queue is busy, waiting 250 millis to begin");
-	 * this.wait(250); } } System.out.println("queue is empty, begin");
-	 
-	 * // get it going CacheElement elem = new CacheElement("testCache1", "a:key",
-	 * "adata"); queue.addPutEvent(elem);
-	 * 
-	 * for (int i = 0; i <= end; i++) { synchronized (this) { if (i % 2 == 0) {
-	 * this.wait(idleTime); } else { this.wait(idleTime / 2); } } CacheElement elem2
-	 * = new CacheElement("testCache1", i + ":key", i + "data");
-	 * queue.addPutEvent(elem2); }
-	 * 
-	 * while (!queue.isEmpty()) { synchronized (this) {
-	 * System.out.println("queue is still busy, waiting 250 millis");
-	 * this.wait(250); } } System.out.println("queue is empty, comparing putCount");
-	 * 
-	 * Thread.sleep(1000);
-	 * 
-	 * // this becomes less accurate with each test. It should never fail. If // it
-	 * does things are very off. assertTrue("The put count [" + listen.putCount +
-	 * "] is below the expected minimum threshold [" + expectedPutCount + "]",
-	 * listen.putCount >= (expectedPutCount - 1));
-	 * 
-	 * }
-	 */
+	@Test(expected = Test.None.class)
+	public void runRemoveTest() throws Exception {
+		for (int i = 0; i <= end; i++) {
+			queue.addRemoveEvent(i + ":key");
+		}
+	}
+
+	@Test(expected = Test.None.class)
+	public void runStopProcessingTest() throws Exception {
+		queue.stopProcessing();
+	}
+
+	@Test
+	public void runPutDelayTest() throws Exception {
+		while (!queue.isEmpty()) {
+			synchronized (this) {
+				System.out.println("queue is busy, waiting 250 millis to begin");
+				this.wait(250);
+			}
+		}
+		System.out.println("queue is empty, begin");
+
+		// get it going
+		CacheElement elem = new CacheElement("testCache1", "a:key", "adata");
+		queue.addPutEvent(elem);
+
+		for (int i = 0; i <= end; i++) {
+			synchronized (this) {
+				if (i % 2 == 0) {
+					this.wait(idleTime);
+				} else {
+					this.wait(idleTime / 2);
+				}
+			}
+			CacheElement elem2 = new CacheElement("testCache1", i + ":key", i + "data");
+			queue.addPutEvent(elem2);
+		}
+
+		while (!queue.isEmpty()) {
+			synchronized (this) {
+				System.out.println("queue is still busy, waiting 250 millis");
+				this.wait(250);
+			}
+		}
+		System.out.println("queue is empty, comparing putCount");
+
+		Thread.sleep(1000);
+
+		// this becomes less accurate with each test. It should never fail. If // it
+		// does things are very off.
+		assertTrue("The put count [" + listen.putCount + "] is below the expected minimum threshold ["
+				+ expectedPutCount + "]", listen.putCount >= (expectedPutCount - 1));
+
+	}
+
+	@AfterClass
+	public static void tearDown() {
+		queue.destroy();
+		queue = null;
+		listen = null;
+	}
 }
