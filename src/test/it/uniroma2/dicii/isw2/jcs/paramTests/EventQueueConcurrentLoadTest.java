@@ -8,7 +8,6 @@ import java.util.Collection;
 import org.apache.jcs.engine.CacheElement;
 import org.apache.jcs.engine.CacheEventQueue;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +37,7 @@ public class EventQueueConcurrentLoadTest {
 
 	@Parameters
 	public static Collection<Object[]> getTestParameters() {
-		return Arrays.asList(new Object[][] { { 200, 200 }, { 1200, 1400 }, { 5200, 6600 } });
+		return Arrays.asList(new Object[][] { {200, 200 }, { 1200, 1400 }, { 5200, 6600 } });
 	}
 
 	@BeforeClass
@@ -46,6 +45,13 @@ public class EventQueueConcurrentLoadTest {
 		listen = new CacheListenerImpl();
 		queue = new CacheEventQueue(listen, 1L, "testCache1", maxFailure, waitBeforeRetry);
 		queue.setWaitToDieMillis(idleTime);
+	}
+
+	@AfterClass
+	public static void tearDown() {
+		queue.destroy();
+		queue = null;
+		listen = null;
 	}
 
 	@Test
@@ -124,10 +130,4 @@ public class EventQueueConcurrentLoadTest {
 
 	}
 
-	@AfterClass
-	public static void tearDown() {
-		queue.destroy();
-		queue = null;
-		listen = null;
-	}
 }

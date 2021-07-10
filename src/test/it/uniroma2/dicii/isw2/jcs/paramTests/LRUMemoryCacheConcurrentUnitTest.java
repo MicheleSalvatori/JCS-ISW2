@@ -12,6 +12,7 @@ import org.apache.jcs.engine.behavior.ICacheElement;
 import org.apache.jcs.engine.control.CompositeCache;
 import org.apache.jcs.engine.control.CompositeCacheManager;
 import org.apache.jcs.engine.memory.lru.LRUMemoryCache;
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,9 +21,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class LRUMemoryCacheConcurrentUnitTest {
-	// TODO vedere se ha senso metterli globali e allocarli nel configure()
-//	private static CompositeCache cache;
-//	private static LRUMemoryCache lru;
 
 	private static int items = 200;
 	private static String region;
@@ -33,7 +31,7 @@ public class LRUMemoryCacheConcurrentUnitTest {
 
 	@Parameters
 	public static Collection<Object[]> getTestParameters() {
-		return Arrays.asList(new Object[][] { { "indexedRegion1" } });
+		return Arrays.asList(new Object[][] { { "indexedRegion9" }});
 	}
 
 	@BeforeClass
@@ -43,6 +41,8 @@ public class LRUMemoryCacheConcurrentUnitTest {
 
 	@Test
 	public void runTestForRegion() throws Exception {
+		String log4jConfPath = System.getProperty("user.dir") + "/src/conf/log4j.properties";
+		PropertyConfigurator.configure(log4jConfPath);
 		CompositeCacheManager cacheMgr = CompositeCacheManager.getUnconfiguredInstance();
 		cacheMgr.configure("/TestDiskCache.ccf");
 		CompositeCache cache = cacheMgr.getCache(region);

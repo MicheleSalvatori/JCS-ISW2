@@ -97,7 +97,7 @@
 					<artifactId>jcs</artifactId>
 					<version>1.3</version>
 					<scope>system</scope>
-					<systemPath>F:/Workspace/JCSTets/src/test/lib/jcs-1.3-fat.jar</systemPath>
+					<systemPath>${jarfatPath}</systemPath>
 				</dependency>
 				<dependency>
 					<groupId>commons-logging</groupId>
@@ -122,21 +122,28 @@
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
 						<version>0.8.7</version>
-						<configuration>
-							<destFile>${sonar.jacoco.reportPath}</destFile>
-							<append>true</append>
-							</configuration>
-							<executions>
-								<!-- NOTE THAT AUTOMATIC REPORTING IS USELESS, AS THE SOURCE FILES 
-									OF jcs ARE NEEDED: -->
-								<!-- GENERATE THE REPORTS OFFLINE AS DESCRIBED IN jacocolibSnippets.txt -->
-								<execution>
-									<id>TheExecutionId</id>
-									<goals>
-										<goal>prepare-agent</goal>
-									</goals>
-								</execution>
-							</executions>
+						<executions>
+							<!-- NOTE THAT AUTOMATIC REPORTING IS USELESS, AS THE SOURCE FILES 
+								OF jcs ARE NEEDED: -->
+							<!-- GENERATE THE REPORTS OFFLINE AS DESCRIBED IN jacocolibSnippets.txt -->
+							<execution>
+								<id>PrepareAgent</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>post-unit-test</id>
+								<phase>test</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+								<configuration>
+									<dataFile>target/jacoco.exec</dataFile>
+									<outputDirectory>target/jacoco-ut</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
